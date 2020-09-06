@@ -1,0 +1,14 @@
+* {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	vertical-align: center;
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	font-family: "Roboto", sans-serif;
+}
