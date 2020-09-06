@@ -1,5 +1,6 @@
-{
-	"username": "QuatreB",
+{	"username": "QuatreB",
 	"firstname": "Dmitriy",
-	"lastname": "Khudnitskiy"
+	"lastname": "Khudnitskiy",
+	"version": "v1.0",
+	"sha128": "ef0f0f"
 }
