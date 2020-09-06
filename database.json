@@ -1,7 +1,11 @@
-{
-	"username": "QuatreB",
+{	"username": "QuatreB",
 	"firstname": "Dmitriy",
 	"lastname": "Khudnitskiy",
+<<<<<<< HEAD
 	"version": "v2.0",
 	"sha256": "ef0af02af"
+=======
+	"version": "v1.0",
+	"sha128": "ef0f0f"
+>>>>>>> master
 }
