@@ -1,11 +1,2 @@
 .vs
-*.sln
-*.vcxproj
-*.vcxproj.*
-
-*.txt
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.csproj
+obj/
