@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +97,22 @@ namespace Lab_1
             }
             Console.WriteLine("\n\tInsert()\t " + firstString.Insert(3, thirdString));
             Console.WriteLine("\tRemove()\t " + secondString.Remove(3, 6));
+
+            // 2 - c
+            string emptyString = String.Empty;
+            string nullString = null;
+            Console.WriteLine("\n\tEmpty - {0}\tNull - {1}", emptyString, nullString);
+            Console.WriteLine("\tLength:\t {0}\t\t{1}", emptyString?.Length ?? -1, nullString?.Length ?? -1);
+            Console.WriteLine("\tConcat:\t " + emptyString + nullString);
+            Console.WriteLine("\tEqual:\t " + emptyString.Equals(nullString).ToString());
+
+            // 2 - d
+            StringBuilder builderString = new StringBuilder("We are free to create miracles###");
+            builderString.Remove(builderString.Length - 3, 3);
+            builderString.Insert(0, "Winx - only together we are strong\n");
+            builderString.Append("\nAnd always strive for VICTORY!\n");
+            Console.WriteLine("\n{0}", builderString);
+            Console.WriteLine("\n\tLength:\t {0}\tCapacity:\t {1}", builderString.Length, builderString.Capacity);
             Console.ReadKey();
         }
     }
