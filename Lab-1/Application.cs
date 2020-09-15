@@ -66,6 +66,14 @@ namespace Lab_1
             Console.WriteLine("\t autoFloat\t " + autoFloat.GetType());
             Console.WriteLine("\t autoString\t " + autoString.GetType());
 
+            // 1 - e
+            bool? nullableBoolVar = boolVar;
+            Nullable<int> nullableIntVar = intVar;
+
+            Console.WriteLine();
+            if (nullableBoolVar.HasValue) Console.WriteLine("Nullable<bool> value is " + nullableBoolVar.Value);
+            Console.WriteLine("Nullable<int> value is " + nullableIntVar.ToString() ?? "null");
+
             Console.Read();
 
         }
