@@ -5,6 +5,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Lab_1
 {
@@ -197,7 +198,16 @@ namespace Lab_1
 
             Console.WriteLine($"\nTuples is equal ? {(winx.ToTuple() == fakeWinx ? bool.TrueString : bool.FalseString)}");
 
+            // 5
+            Console.WriteLine($"Input: {intArray[0]}, {intArray[1]}, {intArray[2]}, {firstName}");
+            var answer = new Application().MakeFunctionGreateAgain(intArray, firstName);
+            Console.WriteLine($"Output: {answer}");
             Console.ReadKey();
+        }
+
+        public (int max, int min, long sum, char firstLetter) MakeFunctionGreateAgain(int[] intArray, string str)
+        {
+            return (intArray.Max(), intArray.Min(), intArray.Sum(), str[0]);
         }
     }
 }
