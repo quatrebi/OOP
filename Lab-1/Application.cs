@@ -10,6 +10,7 @@ namespace Lab_1
     {
         static void Main(string[] args)
         {
+            // 1-a
             // Value Types
             bool booleanVar = true; // System.Boolean;
 
@@ -37,8 +38,6 @@ namespace Lab_1
             object obj = 234; // System.Object
             string str = "beautifull string"; // System.String
             dynamic dobj = 345; // System.Object
-
-            Console.Read();
         }
     }
 }
