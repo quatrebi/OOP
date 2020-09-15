@@ -10,34 +10,28 @@ namespace Lab_1
     {
         static void Main(string[] args)
         {
-            // 1-a
-            // Value Types
-            bool booleanVar = true; // System.Boolean;
+            // 1 - a
+            // - Value Types
+            bool boolVar;           // System.Boolean;
+            char charVar;           // System.Char
 
-            /*  System.
-            *           SByte (sbyte) s8-bit
-            *           Byte (byte) u8-bit
-            *           Int16 (short) s16-bit
-            *           UInt16 (ushort) u16-bit
-            *           Int32 (int) s32-bit
-            *           UInt32 (uint) u32-bit
-            *           Int64 (long) s64-bit
-            *           UInt64 (ulong) u64-bit
-            */
-            int integerVar = 123;
-            char charVar = 'a'; // System.Char
+            sbyte sbyteVar;         // System.SByte (s8-bit)
+            byte byteVar;           // Systen.Byte (u8-bit)
+            short shortVar;         // System.Int16 (s16-bit)
+            ushort ushortVar;       // System.UInt16 (u16-bit)
+            int intVar;             // System.Int32 (s32-bit)
+            uint uintVar;           // System.UInt32 (u32-bit)
+            long longVar;           // System.Int64 (s64-bit)
+            ulong ulongVar;         // System.UInt64 (u64-bit)
 
-            /* System.
-             *          Single (float) 4-bytes
-             *          Double (double) 8-bytes
-             *          Decimal (decimal) 16-bytes
-             */
-            double floatingVar = 123.345;
+            float floatVar;         // System.Single (4-bytes)
+            double doubleVar;       // System.Double (8-bytes)
+            decimal decimalVar;     // System.Decimal (16-bytes)
 
-            // References Types
-            object obj = 234; // System.Object
-            string str = "beautifull string"; // System.String
-            dynamic dobj = 345; // System.Object
+            // - References Types
+            object objectVar;       // System.Object
+            string stringVar;       // System.String
+            dynamic dynamicVar;     // System.Object
         }
     }
 }
