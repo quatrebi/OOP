@@ -53,8 +53,21 @@ namespace Lab_1
             objectVar = intVar;
             dynamicVar = sbyteVar;
             // Распаковка
-            shortVar = (short)objectVar;
+            longVar = (int)objectVar;
             byteVar = (byte)dynamicVar;
+
+            // 1 - d
+            var autoInt = intVar;
+            var autoFloat = floatVar;
+            var autoString = stringVar;
+
+            Console.WriteLine("\tvar\t\tType");
+            Console.WriteLine("\t autoInt\t " + autoInt.GetType());
+            Console.WriteLine("\t autoFloat\t " + autoFloat.GetType());
+            Console.WriteLine("\t autoString\t " + autoString.GetType());
+
+            Console.Read();
+
         }
     }
 }
