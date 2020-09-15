@@ -47,6 +47,14 @@ namespace Lab_1
             sbyteVar = (sbyte)ulongVar;
             ushortVar = (ushort)doubleVar;
             stringVar = (string)objectVar;
+
+            // 1 - c 
+            // Упаковка 
+            objectVar = intVar;
+            dynamicVar = sbyteVar;
+            // Распаковка
+            shortVar = (short)objectVar;
+            byteVar = (byte)dynamicVar;
         }
     }
 }
