@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
@@ -126,7 +127,42 @@ namespace Lab_1
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
 
+            // 3 - b
+            string[] stringArray = { "Blum", "Trix", "Stella", "Flora", "Muza" };
+            Console.WriteLine("Array Length - {0}", stringArray.Length);
+            foreach (var str in stringArray)
+            {
+                Console.WriteLine("\t{0}\t{1} symbols", str, str.Length);
+            }
+            Console.Write("Введите позицию изменяего слова и значение: ");
+            var inputArgs = Console.ReadLine().Split(' ');
+            stringArray[Convert.ToInt32(inputArgs[0])] = inputArgs[1];
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                Console.WriteLine("\t[{0}] {1}\t{2} symbols", i, stringArray[i], stringArray[i].Length);
+            }
+
+            // 3 - c
+            float[][] floatArray = { new float[2], new float[4], new float[3] };
+            for (int i = 0; i < floatArray.Length; i++)
+            {
+                Console.Write("Введите {0} значений через пробел: ", floatArray[i].Length);
+                inputArgs = Console.ReadLine().Split(' ');
+                for (int j = 0; j < floatArray[i].Length; j++)
+                {
+                    floatArray[i][j] = (float)Convert.ToDouble(inputArgs[j]);
+                }
+            }
+            foreach (var line in floatArray)
+            {
+                foreach (var item in line)
+                {
+                    Console.Write("\t{0}", item.ToString());
+                }
+                Console.WriteLine();
+            }
             Console.ReadKey();
         }
     }
