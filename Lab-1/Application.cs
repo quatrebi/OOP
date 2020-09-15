@@ -74,8 +74,29 @@ namespace Lab_1
             if (nullableBoolVar.HasValue) Console.WriteLine("Nullable<bool> value is " + nullableBoolVar.Value);
             Console.WriteLine("Nullable<int> value is " + nullableIntVar.ToString() ?? "null");
 
-            Console.Read();
+            // 2 - a
+            string firstName    = "Dmitriy";
+            string secondName   = "Khudnitskiy";
+            Console.WriteLine();
+            Console.WriteLine("firstName is equal to secondName ? " + firstName.Equals(secondName).ToString());
 
+            // 2 - b
+            string firstString      = "First String";
+            string secondString     = "Second String";
+            string thirdString      = "Third String";
+            Console.WriteLine();
+            Console.WriteLine("Input string:\t{0}\t{1}\t{2}\n", firstString, secondString, thirdString);
+            Console.WriteLine("\tConcat()\t " + String.Concat(firstString, secondString));
+            Console.WriteLine("\tCopy()\t\t " + String.Copy(thirdString));
+            Console.WriteLine("\tSubstring()\t " + thirdString.Substring(3, 6));
+            Console.Write("\tSplit()\t  ");
+            foreach (var word in (firstString + secondString + thirdString).Split(' '))
+            {
+                Console.Write("\t{0}", word);
+            }
+            Console.WriteLine("\n\tInsert()\t " + firstString.Insert(3, thirdString));
+            Console.WriteLine("\tRemove()\t " + secondString.Remove(3, 6));
+            Console.ReadKey();
         }
     }
 }
