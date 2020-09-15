@@ -112,7 +112,21 @@ namespace Lab_1
             builderString.Insert(0, "Winx - only together we are strong\n");
             builderString.Append("\nAnd always strive for VICTORY!\n");
             Console.WriteLine("\n{0}", builderString);
-            Console.WriteLine("\n\tLength:\t {0}\tCapacity:\t {1}", builderString.Length, builderString.Capacity);
+            Console.WriteLine("\n\tLength:\t {0}\tCapacity:\t {1}\n", builderString.Length, builderString.Capacity);
+
+            // 3 - a
+            Random rand = new Random(System.DateTime.Now.Millisecond);
+            int[,] matrix = new int[10, 10];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    matrix[i, j] = rand.Next(-10, 10);
+                    Console.Write("\t{0}", matrix[i, j].ToString());
+                }
+                Console.WriteLine();
+            }
+
             Console.ReadKey();
         }
     }
