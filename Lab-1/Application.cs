@@ -14,26 +14,26 @@ namespace Lab_1
         {
             // 1 - a
             // - Value Types
-            bool boolVar            = true;                     // System.Boolean;
-            char charVar            = char.MaxValue;            // System.Char
+            bool boolVar = true;                     // System.Boolean;
+            char charVar = char.MaxValue;            // System.Char
 
-            sbyte sbyteVar          = sbyte.MinValue;           // System.SByte (s8-bit)
-            byte byteVar            = byte.MaxValue;            // Systen.Byte (u8-bit)
-            short shortVar          = short.MinValue;           // System.Int16 (s16-bit)
-            ushort ushortVar        = ushort.MaxValue;          // System.UInt16 (u16-bit)
-            int intVar              = int.MinValue;             // System.Int32 (s32-bit)
-            uint uintVar            = uint.MaxValue;            // System.UInt32 (u32-bit)
-            long longVar            = long.MinValue;            // System.Int64 (s64-bit)
-            ulong ulongVar          = ulong.MaxValue;           // System.UInt64 (u64-bit)
+            sbyte sbyteVar = sbyte.MinValue;           // System.SByte (s8-bit)
+            byte byteVar = byte.MaxValue;            // Systen.Byte (u8-bit)
+            short shortVar = short.MinValue;           // System.Int16 (s16-bit)
+            ushort ushortVar = ushort.MaxValue;          // System.UInt16 (u16-bit)
+            int intVar = int.MinValue;             // System.Int32 (s32-bit)
+            uint uintVar = uint.MaxValue;            // System.UInt32 (u32-bit)
+            long longVar = long.MinValue;            // System.Int64 (s64-bit)
+            ulong ulongVar = ulong.MaxValue;           // System.UInt64 (u64-bit)
 
-            float floatVar          = float.MinValue;           // System.Single (4-bytes)
-            double doubleVar        = double.MaxValue;          // System.Double (8-bytes)
-            decimal decimalVar      = decimal.MinValue;         // System.Decimal (16-bytes)
+            float floatVar = float.MinValue;           // System.Single (4-bytes)
+            double doubleVar = double.MaxValue;          // System.Double (8-bytes)
+            decimal decimalVar = decimal.MinValue;         // System.Decimal (16-bytes)
 
             // - References Types
-            object objectVar        = new object();             // System.Object
-            string stringVar        = new string(new char[1]);  // System.String
-            dynamic dynamicVar      = new object();             // System.Object
+            object objectVar = new object();             // System.Object
+            string stringVar = new string(new char[1]);  // System.String
+            dynamic dynamicVar = new object();             // System.Object
 
             // 1 - b
             // - Неявное преобразование (возможна потеря данных)
@@ -77,15 +77,15 @@ namespace Lab_1
             Console.WriteLine("Nullable<int> value is " + nullableIntVar.ToString() ?? "null");
 
             // 2 - a
-            string firstName    = "Dmitriy";
-            string secondName   = "Khudnitskiy";
+            string firstName = "Dmitriy";
+            string secondName = "Khudnitskiy";
             Console.WriteLine();
             Console.WriteLine("firstName is equal to secondName ? " + firstName.Equals(secondName).ToString());
 
             // 2 - b
-            string firstString      = "First String";
-            string secondString     = "Second String";
-            string thirdString      = "Third String";
+            string firstString = "First String";
+            string secondString = "Second String";
+            string thirdString = "Third String";
             Console.WriteLine();
             Console.WriteLine("Input string:\t{0}\t{1}\t{2}\n", firstString, secondString, thirdString);
             Console.WriteLine("\tConcat()\t " + String.Concat(firstString, secondString));
@@ -163,6 +163,40 @@ namespace Lab_1
                 }
                 Console.WriteLine();
             }
+
+            // 3 - d
+            var intArray = new int[] { 3, 1, 4 };
+            var boolArray = new bool[] { true, false };
+            var doubleArray = new double[] { 3.14, 3.14, 3.14 };
+            var charArray = new char[] { 'W', 'i', 'n', 'x' };
+            Console.WriteLine("\n\tvar\t\tType");
+            Console.WriteLine("\t intArray\t " + intArray.GetType());
+            Console.WriteLine("\t boolArray\t " + boolArray.GetType());
+            Console.WriteLine("\t doubleArray\t " + doubleArray.GetType());
+            Console.WriteLine("\t charArray\t " + charArray.GetType());
+
+            // 4 - a
+            (int, string, char, string, ulong) winx = (0, "ENCHANTIX", 'e', "MAGIC DUST!", 0xFF);
+            var fakeWinx = Tuple.Create<int, string, char, string, ulong>(1, "ENCHANTIX", 'f', "MAGIC DIST!", 0xFF);
+            // 4 - b
+            Console.WriteLine("\tWinx:");
+            Console.Write($"\t\t{winx.Item1}");
+            Console.Write($"\t{winx.Item2}");
+            Console.Write($"\t{winx.Item3}");
+            Console.Write($"\t{winx.Item4}");
+            Console.Write($"\t{winx.Item5}\n");
+            Console.WriteLine("\tFakeWinx:");
+            Console.Write($"\t\t{fakeWinx.Item1}");
+            Console.Write($"\t{fakeWinx.Item3}");
+
+            int intTuple = (int)winx.Item1;
+            string stringTuple1 = winx.Item2;
+            char charTuple = (char)winx.Item3;
+            string stringTuple2 = (string)winx.Item4;
+            ulong ulongTuple = winx.Item5;
+
+            Console.WriteLine($"\nTuples is equal ? {(winx.ToTuple() == fakeWinx ? bool.TrueString : bool.FalseString)}");
+
             Console.ReadKey();
         }
     }
