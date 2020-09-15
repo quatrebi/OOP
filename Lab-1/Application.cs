@@ -34,7 +34,19 @@ namespace Lab_1
             dynamic dynamicVar      = new object();             // System.Object
 
             // 1 - b
-            intVar = (int)charVar;
+            // - Неявное преобразование (возможна потеря данных)
+            intVar = shortVar;
+            ushortVar = byteVar;
+            doubleVar = floatVar;
+            longVar = intVar;
+            objectVar = stringVar;
+
+            // - Явное преобразование (нет потери данных)
+            charVar = (char)intVar;
+            floatVar = (float)decimalVar;
+            sbyteVar = (sbyte)ulongVar;
+            ushortVar = (ushort)doubleVar;
+            stringVar = (string)objectVar;
         }
     }
 }
