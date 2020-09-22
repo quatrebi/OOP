@@ -14,17 +14,75 @@ namespace Lab_2
     class Application
     {
         public static Random rand;
+        public static Driver[] availableDrivers;
+        public static Regex busNumberPattern;
         static void Main(string[] args)
         {
+            busNumberPattern = new Regex(@"\d{4}\s\w{2}-[1-7]");
+            availableDrivers = new Driver[] { new Driver(), new Driver(firstname: "Alena"), new Driver("Vlad", "Matusevich"), new Driver("Mukha Daniil"), new Driver("Sinkevich Kirill") };
             rand = new Random(DateTime.Now.Millisecond);
+            Bus[] buses = new Bus[rand.Next(17) + 3];
 
-            Driver driver = new Driver();
-            Bus bus = new Bus
+            Console.WriteLine("\nСписок автобусов: ");
+            for (int i = 0; i < buses.Length; i++)
             {
-                Driver = driver,
-                BusNumber = "4725 IT-1"
-            };
-            Console.WriteLine(bus);
+                buses[i] = new Bus()
+                {
+                    Driver = availableDrivers[rand.Next(availableDrivers.Length)],
+                    WayNumber = (short)rand.Next(100),
+                    BusNumber = $"{rand.Next(1111, 9999)} {(char)rand.Next('A', 'Z')}{(char)rand.Next('A', 'Z')}-{rand.Next(9)}",
+                };
+            }
+
+            buses[0].Brand = "MAN"; buses[0].BusNumber = "C357BM 25";
+            buses[1].Brand = "МАЗ-103"; buses[1].BusNumber = "1337 IT-4"; buses[1].WayNumber = 999;
+
+            foreach (var bus in buses)
+            {
+                Console.WriteLine($"\t{bus}\t{bus.GetType()}");
+            }
+
+            Console.WriteLine("\nПоиск одинаковых автобусов: ");
+            for (int i = 0; i < buses.Length; i++)
+            {
+                for (int j = i + 1; j < buses.Length; j++)
+                {
+                    if (Equals(buses[i], buses[j]))
+                        Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
+                }
+            }
+
+            buses[2].WayNumber = 1;
+
+            Console.WriteLine("\nПоиск одинаковых маршрутов: ");
+            for (int i = 0; i < buses.Length; i++)
+            {
+                for (int j = i + 1; j < buses.Length; j++)
+                {
+                    if (buses[i].WayNumber == buses[j].WayNumber)
+                        Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
+                }
+            }
+
+            Console.Write("\nВведите номер требуемого маршрута: ");
+            int wayChoice = Convert.ToInt32(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.Green;
+            foreach (var bus in buses)
+            {
+                if (bus.WayNumber == wayChoice) Console.WriteLine($"\t{bus}");
+            }
+            Console.ResetColor();
+
+            Console.Write("\nВведите срок эксплуатации: ");
+            int yearChoice = Convert.ToInt32(Console.ReadLine());
+            Console.ForegroundColor = ConsoleColor.Green;
+            foreach (var bus in buses)
+            {
+                int busAge; bus.GetBusAge(out busAge);
+                if (busAge > yearChoice) Console.WriteLine($"\t{bus}\t{busAge} years");
+            }
+            Console.ResetColor();
+
             Console.ReadKey();
         }
     }
@@ -43,6 +101,8 @@ namespace Lab_2
         private static string[] m_availableBrands;
         private const short m_maxSpeed = 90;
 
+        public static int Count;
+
         // Properties
         public long ID
         {
@@ -59,10 +119,17 @@ namespace Lab_2
             get { return _busNumber; }
             set
             {
-                if (Regex.IsMatch(value, @"\d{4}\s\w{2}-[1-7]"))
+                if (Application.busNumberPattern.IsMatch(value))
+                {
                     _busNumber = value;
+                }
                 else
-                    Console.Error.WriteLine("[Class.Bus.BusNumber] Number mismatch with format.");
+                {
+                    _busNumber = "1337 IT-4";
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine($" Error: [Class.Bus.BusNumber] Number mismatch with format {value}.");
+                    Console.ResetColor();
+                }
             }
         }
         public short WayNumber
@@ -70,10 +137,17 @@ namespace Lab_2
             get { return _wayNumber; }
             set
             {
-                if (value > 0)
+                if (value > 0 && value < 200)
+                {
                     _wayNumber = value;
+                }
                 else
-                    Console.Error.WriteLine("[Class.Bus.WayNumber] Incorrect way number");
+                {
+                    _wayNumber = 1;
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine($" Error: [Class.Bus.WayNumber] Incorrect way number {value}.");
+                    Console.ResetColor();
+                }
             }
         }
 
@@ -83,9 +157,16 @@ namespace Lab_2
             set
             {
                 if (m_availableBrands.Contains(value))
+                {
                     _brand = value;
+                }
                 else
-                    Console.Error.WriteLine("[Class.Bus.Brand] Unavailable brand.");
+                {
+                    _brand = m_availableBrands[0];
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine($" Error: [Class.Bus.Brand] Unavailable brand {value}.");
+                    Console.ResetColor();
+                }
             }
         }
 
@@ -101,12 +182,20 @@ namespace Lab_2
             private set { _mileage = value; }
         }
 
+        public static string About
+        {
+            get { return "Представляет информацию о Автобусе."; }
+        }
+
         // Constructors
 
         Bus(long seed = 27032002)
         {
             _id = seed.GetHashCode();
+            Count++;
         }
+
+        ~Bus() => Count--;
 
         static Bus()
         {
@@ -118,7 +207,7 @@ namespace Lab_2
             Brand = m_availableBrands[Application.rand.Next(m_availableBrands.Length)];
             StartDate = new DateTime(year: Application.rand.Next(1997, DateTime.Now.Year - 1),
                                      month: Application.rand.Next(1, 12),
-                                     day: Application.rand.Next(1, 31));
+                                     day: Application.rand.Next(1, 28));
             Mileage = (DateTime.Now.Hour - StartDate.Hour) * Application.rand.Next(50, m_maxSpeed);
         }
 
@@ -135,10 +224,9 @@ namespace Lab_2
 
         // Methods
 
-        public int GetBusAge(out int currentYear)
+        public void GetBusAge(out int busAge)
         {
-            currentYear = DateTime.Now.Year;
-            return currentYear - StartDate.Year;
+            busAge = DateTime.Now.Year - StartDate.Year;
         }
 
         public override bool Equals(object obj)
@@ -153,7 +241,7 @@ namespace Lab_2
 
         public override string ToString()
         {
-            return $"{_brand}[{BusNumber}] {_startDate} {_mileage}kms | {Driver} - {_wayNumber}";
+            return $"{_brand} [{BusNumber}] {_startDate.ToShortDateString()} {_mileage}kms | {Driver}\t{_wayNumber}";
         }
     }
 
@@ -178,6 +266,13 @@ namespace Lab_2
         {
             _firstName = String.Empty;
             _lastName = String.Empty;
+        }
+
+        public Driver(string name)
+        {
+            string[] splited = name.Split(' ');
+            Firstname = splited[0];
+            Lastname = splited[1];
         }
 
         public Driver(string firstname = "Dmitriy", string lastname = "Khudnitskiy") : this()
