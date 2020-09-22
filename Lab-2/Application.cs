@@ -23,7 +23,6 @@ namespace Lab_2
             rand = new Random(DateTime.Now.Millisecond);
             Bus[] buses = new Bus[rand.Next(17) + 3];
 
-            Console.WriteLine("\nСписок автобусов: ");
             for (int i = 0; i < buses.Length; i++)
             {
                 buses[i] = new Bus()
@@ -37,12 +36,16 @@ namespace Lab_2
             buses[0].Brand = "MAN"; buses[0].BusNumber = "C357BM 25";
             buses[1].Brand = "МАЗ-103"; buses[1].BusNumber = "1337 IT-4"; buses[1].WayNumber = 999;
 
+            Console.WriteLine("\n Список автобусов: ");
+            Console.ForegroundColor = ConsoleColor.Gray;
             foreach (var bus in buses)
             {
                 Console.WriteLine($"\t{bus}\t{bus.GetType()}");
             }
+            Console.ResetColor();
 
-            Console.WriteLine("\nПоиск одинаковых автобусов: ");
+            Console.WriteLine("\n Поиск одинаковых автобусов: ");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             for (int i = 0; i < buses.Length; i++)
             {
                 for (int j = i + 1; j < buses.Length; j++)
@@ -51,10 +54,12 @@ namespace Lab_2
                         Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
                 }
             }
+            Console.ResetColor();
 
             buses[2].WayNumber = 1;
 
-            Console.WriteLine("\nПоиск одинаковых маршрутов: ");
+            Console.WriteLine("\n Поиск одинаковых маршрутов: ");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             for (int i = 0; i < buses.Length; i++)
             {
                 for (int j = i + 1; j < buses.Length; j++)
@@ -63,8 +68,9 @@ namespace Lab_2
                         Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
                 }
             }
+            Console.ResetColor();
 
-            Console.Write("\nВведите номер требуемого маршрута: ");
+            Console.Write("\n Введите номер требуемого маршрута: ");
             int wayChoice = Convert.ToInt32(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.Green;
             foreach (var bus in buses)
@@ -73,7 +79,7 @@ namespace Lab_2
             }
             Console.ResetColor();
 
-            Console.Write("\nВведите срок эксплуатации: ");
+            Console.Write("\n Введите срок эксплуатации: ");
             int yearChoice = Convert.ToInt32(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.Green;
             foreach (var bus in buses)
@@ -83,6 +89,14 @@ namespace Lab_2
             }
             Console.ResetColor();
 
+            var anonBus = new { buses[0].Brand, buses[1].BusNumber };
+            var anonDriver = new { Firstname = "Sofiya", Lastname = "Kuskova"};
+            Console.WriteLine(" Анонимный тип: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"\t{anonBus}\t{anonBus.GetType()}");
+            Console.WriteLine($"\t{anonDriver}\t{anonDriver.GetType()}");
+
+            Console.ResetColor();
             Console.ReadKey();
         }
     }
