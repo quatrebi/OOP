@@ -12,6 +12,43 @@ namespace Lab_4
 {
     public class ForwardList : ICloneable
     {
+        public struct Owner
+        {
+            public readonly long id;
+            public string author;
+            public string company;
+
+            public Owner(long ID)
+            {
+                id = ID.GetHashCode();
+                author = "Dmitriy Khudnitskiy";
+                company = "BSTU";
+            }
+
+            public override string ToString()
+            {
+                return $"[{id}] {author} from {company}";
+            }
+        }
+
+        public class Date
+        {
+            public DateTime Now { get; }
+
+            public Date()
+            {
+                Now = DateTime.Now.Date;
+            }
+
+            public override string ToString()
+            {
+                return $"Date of creation - {Now.ToShortDateString()}";
+            }
+        }
+
+        public Owner owner;
+        public Date creationDate;
+
         public int Length
         {
             get
@@ -31,6 +68,8 @@ namespace Lab_4
 
         public ForwardList()
         {
+            creationDate = new Date();
+            owner = new Owner(creationDate.Now.Millisecond);
             First = new Iterator(Application.rand.Next(-999, 999));
         }
         
