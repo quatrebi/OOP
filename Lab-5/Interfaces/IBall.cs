@@ -8,6 +8,10 @@ namespace Lab_5.Interfaces
 {
     public interface IBall
     {
-        public int Weight { get; private set; }
+        public int Weight { get; }
+
+        public void DoKick();
+
+        void DoSomething();
     }
 }

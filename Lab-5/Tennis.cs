@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace Lab_5
 {
-    public class Tennis
+    sealed public class Tennis
     {
         Equipment[] equipments;
+
+        public Tennis(Equipment[] equipments)
+        {
+            this.equipments = equipments;
+        }
     }
 }

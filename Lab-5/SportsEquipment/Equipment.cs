@@ -8,6 +8,28 @@ namespace Lab_5.SportsEquipment
 {
     public abstract class Equipment
     {
+        protected double somethingField;
+        
+        public virtual double SomethingProperty
+        {
+            get { return somethingField; }
+            set { somethingField = value; }
+        }
 
+        public Equipment()
+        {
+            SomethingProperty = Application.rand.Next(int.MinValue, 0);
+        }
+
+        public virtual void DoSomething()
+        {
+            $"{GetType().Name} is making something...".ToLog();
+        }
+        public abstract string ToStaticString();
+        
+        public override string ToString()
+        {
+            return $"Sports Equipement";
+        }
     }
 }
