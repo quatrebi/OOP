@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Lab_4
-{
+{ 
     class Application
     {
         public static readonly Random rand;

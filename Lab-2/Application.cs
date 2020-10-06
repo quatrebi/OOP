@@ -1,303 +1,214 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
+using System.ComponentModel;
+using System.Data.SqlTypes;
 using System.Linq;
-using System.Security.AccessControl;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace Lab_2
 {
     class Application
     {
-        public static Random rand;
-        public static Driver[] availableDrivers;
-        public static Regex busNumberPattern;
         static void Main(string[] args)
         {
-            busNumberPattern = new Regex(@"\d{4}\s\w{2}-[1-7]");
-            availableDrivers = new Driver[] { new Driver(), new Driver(firstname: "Alena"), new Driver("Vlad", "Matusevich"), new Driver("Mukha Daniil"), new Driver("Sinkevich Kirill") };
-            rand = new Random(DateTime.Now.Millisecond);
-            Bus[] buses = new Bus[rand.Next(17) + 3];
+            // 1 - a
+            // - Value Types
+            bool boolVar             = true;                     // System.Boolean;
+            char charVar             = char.MaxValue;            // System.Char
 
-            for (int i = 0; i < buses.Length; i++)
+            sbyte sbyteVar           = sbyte.MinValue;           // System.SByte (s8-bit)
+            byte byteVar             = byte.MaxValue;            // Systen.Byte (u8-bit)
+            short shortVar           = short.MinValue;           // System.Int16 (s16-bit)
+            ushort ushortVar         = ushort.MaxValue;          // System.UInt16 (u16-bit)
+            int intVar               = int.MinValue;             // System.Int32 (s32-bit)
+            uint uintVar             = uint.MaxValue;            // System.UInt32 (u32-bit)
+            long longVar             = long.MinValue;            // System.Int64 (s64-bit)
+            ulong ulongVar           = ulong.MaxValue;           // System.UInt64 (u64-bit)
+
+            float floatVar           = float.MinValue;           // System.Single (4-bytes)
+            double doubleVar         = double.MaxValue;          // System.Double (8-bytes)
+            decimal decimalVar       = decimal.MinValue;         // System.Decimal (16-bytes)
+
+            // - References Types
+            object objectVar         = new object();             // System.Object
+            string stringVar         = new string(new char[1]);  // System.String
+            dynamic dynamicVar       = new object();             // System.Object
+
+            // 1 - b
+            // - Неявное преобразование (возможна потеря данных)
+            intVar = shortVar;
+            ushortVar = byteVar;
+            doubleVar = floatVar;
+            longVar = intVar;
+            objectVar = stringVar;
+
+            // - Явное преобразование (нет потери данных)
+            charVar = (char)intVar;
+            floatVar = (float)decimalVar;
+            sbyteVar = (sbyte)ulongVar;
+            ushortVar = (ushort)doubleVar;
+            stringVar = (string)objectVar;
+
+            // 1 - c 
+            // Упаковка 
+            objectVar = intVar;
+            dynamicVar = sbyteVar;
+            // Распаковка
+            longVar = (int)objectVar;
+            byteVar = (byte)dynamicVar;
+
+            // 1 - d
+            var autoInt = intVar;
+            var autoFloat = floatVar;
+            var autoString = stringVar;
+
+            Console.WriteLine("\tvar\t\tType");
+            Console.WriteLine("\t autoInt\t " + autoInt.GetType());
+            Console.WriteLine("\t autoFloat\t " + autoFloat.GetType());
+            Console.WriteLine("\t autoString\t " + autoString.GetType());
+
+            // 1 - e
+            bool? nullableBoolVar = boolVar;
+            Nullable<int> nullableIntVar = intVar;
+
+            Console.WriteLine();
+            if (nullableBoolVar.HasValue) Console.WriteLine("Nullable<bool> value is " + nullableBoolVar.Value);
+            Console.WriteLine("Nullable<int> value is " + nullableIntVar.ToString() ?? "null");
+
+            // 2 - a
+            string firstName = "Dmitriy";
+            string secondName = "Khudnitskiy";
+            Console.WriteLine();
+            Console.WriteLine("firstName is equal to secondName ? " + firstName.Equals(secondName).ToString());
+
+            // 2 - b
+            string firstString = "First String";
+            string secondString = "Second String";
+            string thirdString = "Third String";
+            Console.WriteLine();
+            Console.WriteLine("Input string:\t{0}\t{1}\t{2}\n", firstString, secondString, thirdString);
+            Console.WriteLine("\tConcat()\t " + String.Concat(firstString, secondString));
+            Console.WriteLine("\tCopy()\t\t " + String.Copy(thirdString));
+            Console.WriteLine("\tSubstring()\t " + thirdString.Substring(3, 6));
+            Console.Write("\tSplit()\t  ");
+            foreach (var word in (firstString + secondString + thirdString).Split(' '))
             {
-                buses[i] = new Bus()
+                Console.Write("\t{0}", word);
+            }
+            Console.WriteLine("\n\tInsert()\t " + firstString.Insert(3, thirdString));
+            Console.WriteLine("\tRemove()\t " + secondString.Remove(3, 6));
+
+            // 2 - c
+            string emptyString = String.Empty;
+            string nullString = null;
+            Console.WriteLine("\n\tEmpty - {0}\tNull - {1}", emptyString, nullString);
+            Console.WriteLine("\tLength:\t {0}\t\t{1}", emptyString?.Length ?? -1, nullString?.Length ?? -1);
+            Console.WriteLine("\tConcat:\t " + emptyString + nullString);
+            Console.WriteLine("\tEqual:\t " + emptyString.Equals(nullString).ToString());
+
+            // 2 - d
+            StringBuilder builderString = new StringBuilder("We are free to create miracles###");
+            builderString.Remove(builderString.Length - 3, 3);
+            builderString.Insert(0, "Winx - only together we are strong\n");
+            builderString.Append("\nAnd always strive for VICTORY!\n");
+            Console.WriteLine("\n{0}", builderString);
+            Console.WriteLine("\n\tLength:\t {0}\tCapacity:\t {1}\n", builderString.Length, builderString.Capacity);
+
+            // 3 - a
+            Random rand = new Random(System.DateTime.Now.Millisecond);
+            int[,] matrix = new int[10, 10];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Driver = availableDrivers[rand.Next(availableDrivers.Length)],
-                    WayNumber = (short)rand.Next(100),
-                    BusNumber = $"{rand.Next(1111, 9999)} {(char)rand.Next('A', 'Z')}{(char)rand.Next('A', 'Z')}-{rand.Next(9)}",
-                };
+                    matrix[i, j] = rand.Next(-10, 10);
+                    Console.Write("\t{0}", matrix[i, j].ToString());
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+
+            // 3 - b
+            string[] stringArray = { "Blum", "Trix", "Stella", "Flora", "Muza" };
+            Console.WriteLine("Array Length - {0}", stringArray.Length);
+            foreach (var str in stringArray)
+            {
+                Console.WriteLine("\t{0}\t{1} symbols", str, str.Length);
+            }
+            Console.Write("Введите позицию изменяего слова и значение: ");
+            var inputArgs = Console.ReadLine().Split(' ');
+            stringArray[Convert.ToInt32(inputArgs[0])] = inputArgs[1];
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                Console.WriteLine("\t[{0}] {1}\t{2} symbols", i, stringArray[i], stringArray[i].Length);
             }
 
-            buses[0].Brand = "MAN"; buses[0].BusNumber = "C357BM 25";
-            buses[1].Brand = "МАЗ-103"; buses[1].BusNumber = "1337 IT-4"; buses[1].WayNumber = 999;
-
-            Console.WriteLine("\n Список автобусов: ");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            foreach (var bus in buses)
+            // 3 - c
+            float[][] floatArray = { new float[2], new float[4], new float[3] };
+            for (int i = 0; i < floatArray.Length; i++)
             {
-                Console.WriteLine($"\t{bus}\t{bus.GetType()}");
-            }
-            Console.ResetColor();
-
-            Console.WriteLine("\n Поиск одинаковых автобусов: ");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            for (int i = 0; i < buses.Length; i++)
-            {
-                for (int j = i + 1; j < buses.Length; j++)
+                Console.Write("Введите {0} значений через пробел: ", floatArray[i].Length);
+                inputArgs = Console.ReadLine().Split(' ');
+                for (int j = 0; j < floatArray[i].Length; j++)
                 {
-                    if (Equals(buses[i], buses[j]))
-                        Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
+                    floatArray[i][j] = (float)Convert.ToDouble(inputArgs[j]);
                 }
             }
-            Console.ResetColor();
-
-            buses[2].WayNumber = 1;
-
-            Console.WriteLine("\n Поиск одинаковых маршрутов: ");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            for (int i = 0; i < buses.Length; i++)
+            foreach (var line in floatArray)
             {
-                for (int j = i + 1; j < buses.Length; j++)
+                foreach (var item in line)
                 {
-                    if (buses[i].WayNumber == buses[j].WayNumber)
-                        Console.WriteLine($"\n\t{buses[i]}\n\t{buses[j]}");
+                    Console.Write("\t{0}", item.ToString());
                 }
+                Console.WriteLine();
             }
-            Console.ResetColor();
 
-            Console.Write("\n Введите номер требуемого маршрута: ");
-            int wayChoice = Convert.ToInt32(Console.ReadLine());
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var bus in buses)
-            {
-                if (bus.WayNumber == wayChoice) Console.WriteLine($"\t{bus}");
-            }
-            Console.ResetColor();
+            // 3 - d
+            var intArray = new int[] { 3, 1, 4 };
+            var boolArray = new bool[] { true, false };
+            var doubleArray = new double[] { 3.14, 3.14, 3.14 };
+            var charArray = new char[] { 'W', 'i', 'n', 'x' };
+            Console.WriteLine("\n\tvar\t\tType");
+            Console.WriteLine("\t intArray\t " + intArray.GetType());
+            Console.WriteLine("\t boolArray\t " + boolArray.GetType());
+            Console.WriteLine("\t doubleArray\t " + doubleArray.GetType());
+            Console.WriteLine("\t charArray\t " + charArray.GetType());
 
-            Console.Write("\n Введите срок эксплуатации: ");
-            int yearChoice = Convert.ToInt32(Console.ReadLine());
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (var bus in buses)
-            {
-                int busAge; bus.GetBusAge(out busAge);
-                if (busAge > yearChoice) Console.WriteLine($"\t{bus}\t{busAge} years");
-            }
-            Console.ResetColor();
+            // 4 - a
+            (int, string, char, string, ulong) winx = (0, "ENCHANTIX", 'e', "MAGIC DUST!", 0xFF);
+            var fakeWinx = Tuple.Create<int, string, char, string, ulong>(1, "ENCHANTIX", 'f', "MAGIC DIST!", 0xFF);
+            // 4 - b
+            Console.WriteLine("\tWinx:");
+            Console.Write($"\t\t{winx.Item1}");
+            Console.Write($"\t{winx.Item2}");
+            Console.Write($"\t{winx.Item3}");
+            Console.Write($"\t{winx.Item4}");
+            Console.Write($"\t{winx.Item5}\n");
+            Console.WriteLine("\tFakeWinx:");
+            Console.Write($"\t\t{fakeWinx.Item1}");
+            Console.Write($"\t{fakeWinx.Item3}");
 
-            var anonBus = new { buses[0].Brand, buses[1].BusNumber };
-            var anonDriver = new { Firstname = "Sofiya", Lastname = "Kuskova"};
-            Console.WriteLine(" Анонимный тип: ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"\t{anonBus}\t{anonBus.GetType()}");
-            Console.WriteLine($"\t{anonDriver}\t{anonDriver.GetType()}");
+            int intTuple = (int)winx.Item1;
+            string stringTuple1 = winx.Item2;
+            char charTuple = (char)winx.Item3;
+            string stringTuple2 = (string)winx.Item4;
+            ulong ulongTuple = winx.Item5;
 
-            Console.ResetColor();
+            Console.WriteLine($"\nTuples is equal ? {(winx.ToTuple() == fakeWinx ? bool.TrueString : bool.FalseString)}");
+
+            // 5
+            Console.WriteLine($"Input: {intArray[0]}, {intArray[1]}, {intArray[2]}, {firstName}");
+            var answer = new Application().MakeFunctionGreateAgain(intArray, firstName);
+            Console.WriteLine($"Output: {answer}");
             Console.ReadKey();
         }
-    }
 
-    public partial class Bus
-    {
-        // Fields
-        private readonly long _id;
-        private Driver _driver;
-        private string _busNumber;
-        private short _wayNumber;
-        private string _brand;
-        private DateTime _startDate;
-        private long _mileage;
-
-        private static string[] m_availableBrands;
-        private const short m_maxSpeed = 90;
-
-        public static int Count;
-
-        // Properties
-        public long ID
+        public (int max, int min, long sum, char firstLetter) MakeFunctionGreateAgain(int[] intArray, string str)
         {
-            get { return _id; }
-        }
-        public Driver Driver
-        {
-            get { return _driver; }
-            set { _driver = value; }
-        }
-
-        public string BusNumber
-        {
-            get { return _busNumber; }
-            set
-            {
-                if (Application.busNumberPattern.IsMatch(value))
-                {
-                    _busNumber = value;
-                }
-                else
-                {
-                    _busNumber = "1337 IT-4";
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Error.WriteLine($" Error: [Class.Bus.BusNumber] Number mismatch with format {value}.");
-                    Console.ResetColor();
-                }
-            }
-        }
-        public short WayNumber
-        {
-            get { return _wayNumber; }
-            set
-            {
-                if (value > 0 && value < 200)
-                {
-                    _wayNumber = value;
-                }
-                else
-                {
-                    _wayNumber = 1;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Error.WriteLine($" Error: [Class.Bus.WayNumber] Incorrect way number {value}.");
-                    Console.ResetColor();
-                }
-            }
-        }
-
-        public string Brand
-        {
-            get { return _brand; }
-            set
-            {
-                if (m_availableBrands.Contains(value))
-                {
-                    _brand = value;
-                }
-                else
-                {
-                    _brand = m_availableBrands[0];
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Error.WriteLine($" Error: [Class.Bus.Brand] Unavailable brand {value}.");
-                    Console.ResetColor();
-                }
-            }
-        }
-
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; }
-        }
-
-        public long Mileage
-        {
-            get { return _mileage; }
-            private set { _mileage = value; }
-        }
-
-        public static string About
-        {
-            get { return "Представляет информацию о Автобусе."; }
-        }
-
-        // Constructors
-
-        Bus(long seed = 27032002)
-        {
-            _id = seed.GetHashCode();
-            Count++;
-        }
-
-        ~Bus() => Count--;
-
-        static Bus()
-        {
-            m_availableBrands = new string[] { "МАЗ-103", "МАЗ-104", "МАЗ-105", "МАЗ-107", "МАЗ-152", "МАЗ-203", "МАЗ-206", "МАЗ-251", "МАЗ-256" };
-        }
-
-        public Bus() : this(DateTime.Now.Millisecond)
-        {
-            Brand = m_availableBrands[Application.rand.Next(m_availableBrands.Length)];
-            StartDate = new DateTime(year: Application.rand.Next(1997, DateTime.Now.Year - 1),
-                                     month: Application.rand.Next(1, 12),
-                                     day: Application.rand.Next(1, 28));
-            Mileage = (DateTime.Now.Hour - StartDate.Hour) * Application.rand.Next(50, m_maxSpeed);
-        }
-
-        public Bus(string busNumber = "1337 IT-4") : this()
-        {
-            BusNumber = busNumber;
-        }
-
-        public Bus(Driver driver, short wayNumber) : this()
-        {
-            Driver = driver;
-            WayNumber = wayNumber;
-        }
-
-        // Methods
-
-        public void GetBusAge(out int busAge)
-        {
-            busAge = DateTime.Now.Year - StartDate.Year;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return (BusNumber == ((Bus)obj).BusNumber && Brand == ((Bus)obj).Brand);
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return $"{_brand} [{BusNumber}] {_startDate.ToShortDateString()} {_mileage}kms | {Driver}\t{_wayNumber}";
-        }
-    }
-
-    public class Driver
-    {
-        string _firstName;
-        string _lastName;
-
-        public string Firstname
-        {
-            get { return _firstName; }
-            set { _firstName = value; }
-        }
-
-        public string Lastname
-        {
-            get { return _lastName; }
-            set { _lastName = value; }
-        }
-
-        Driver()
-        {
-            _firstName = String.Empty;
-            _lastName = String.Empty;
-        }
-
-        public Driver(string name)
-        {
-            string[] splited = name.Split(' ');
-            Firstname = splited[0];
-            Lastname = splited[1];
-        }
-
-        public Driver(string firstname = "Dmitriy", string lastname = "Khudnitskiy") : this()
-        {
-            Firstname = firstname;
-            Lastname = lastname;
-        }
-
-        public override string ToString()
-        {
-            return $"{_firstName} {_lastName}";
+            return (intArray.Max(), intArray.Min(), intArray.Sum(), str[0]);
         }
     }
 }

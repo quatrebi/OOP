@@ -144,7 +144,6 @@ namespace Lab_4
             return result;
         }
 
-
         public static bool operator ==(ForwardList left, ForwardList right)
         {
             if (left.Length != right.Length) return false;
