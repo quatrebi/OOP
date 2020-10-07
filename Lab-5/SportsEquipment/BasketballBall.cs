@@ -21,9 +21,13 @@ namespace Lab_5.SportsEquipment
             $"BasketballBall ({Weight}g) was kicked!".ToLog();
         }
 
+        void IBall.DoSomething()
+        {
+            $"{GetHashCode()} - {GetType().Name} is making something... [Interface]".ToLog();
+        }
         public override void DoSomething()
         {
-            $"{GetHashCode()} - {GetType().Name} is making something...".ToLog();
+            $"{GetHashCode()} - {GetType().Name} is making something... [Abstract class]".ToLog();
         }
 
         public override bool Equals(object obj)

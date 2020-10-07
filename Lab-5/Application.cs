@@ -62,6 +62,13 @@ namespace Lab_5
             {
                 printer.IAmPrinting(equipment);
             }
+
+            "Press any button to continue...".ToLog();
+            Console.ReadKey();
+
+            (equipments[1] as BasketballBall).DoSomething();
+            (equipments[1] as IBall).DoSomething();
+
             Console.ReadKey();
         }
     }
@@ -122,14 +129,14 @@ namespace Lab_5
     public static class ExtensionMethods
     {
         private static int logSize = 0;
-        private const int logMaxSize = 4;
+        private const int logMaxSize = 5;
         public static void ToLog(this string source)
         {
             source = $" - {source}";
             int buffTop = Console.CursorTop;
             Console.Write(source);
             Console.MoveBufferArea(Console.CursorLeft - source.Length, Console.CursorTop, Console.WindowWidth - 1, 1, 0, Console.WindowHeight - logMaxSize - 1 + logSize++);
-            logSize %= logMaxSize + 1;
+            logSize %= (logMaxSize + 1);
             Console.SetCursorPosition(0, buffTop);
         }
 
