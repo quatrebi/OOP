@@ -9,16 +9,31 @@ namespace Lab_6.SportsEquipment
 {
     public class BasketballBall : Equipment, IBall
     {
-        public int Weight { get; private set; }
+        public enum Type
+        {
+            Size7 = 0,
+            Size6, Size5, Size3
+        }
+        public struct Dimensions
+        {
+            public float Radius { get; set; }
+            public int Weight { get; set; }
+        }
+        public Type BallType { get; set; }
+        public Dimensions dimensions = new Dimensions();
+
+        public int Weight => dimensions.Weight;
 
         public BasketballBall()
         {
-            Weight = (Application.rand.Next(2) * 620 != 0 ? 620 : 570);
+            Cost = Application.rand.Next(100);
+            BallType = (Type)Application.rand.Next(4);
+            dimensions.Weight = (Application.rand.Next(2) * 620 != 0 ? 620 : 570);
         }
 
         public void DoKick()
         {
-            $"BasketballBall ({Weight}g) was kicked!".ToLog();
+            $"BasketballBall ({dimensions.Weight}g) was kicked!".ToLog();
         }
 
         void IBall.DoSomething()
@@ -32,22 +47,22 @@ namespace Lab_6.SportsEquipment
 
         public override bool Equals(object obj)
         {
-            return Weight == (obj as BasketballBall).Weight;
+            return dimensions.Weight == (obj as BasketballBall).dimensions.Weight;
         }
 
         public override int GetHashCode()
         {
-            return Weight.GetHashCode();
+            return dimensions.Weight.GetHashCode();
         }
 
         public override string ToStaticString()
         {
-            return "Name\tWeight";
+            return "Name\tWeight\tCost";
         }
 
         public override string ToString()
         {
-            return $"BasketBall\t{Weight}g";
+            return $"BasketBall\t{dimensions.Weight}g\t{Cost}";
         }
     }
 }

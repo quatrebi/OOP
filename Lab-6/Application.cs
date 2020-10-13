@@ -1,4 +1,5 @@
-﻿using Lab_6.Interfaces;
+﻿using Lab_5;
+using Lab_6.Interfaces;
 using Lab_6.SportsEquipment;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,26 @@ namespace Lab_6
             (equipments[1] as BasketballBall).DoSomething();
             (equipments[1] as IBall).DoSomething();
 
+            Console.ReadKey();
+            Console.Clear();
+
+            Gym gym = new Gym(400);
+            while (gym.HasMoney)
+            {
+                Equipment eq = new BasketballBall();
+                gym.AddItem(eq);
+            }
+            Console.WriteLine(gym.ToString());
+            GymController gymc = new GymController(gym);
+            gymc.Sort();
+            Console.WriteLine(gym.ToString());
+            Console.WriteLine("\tEnter cost range:");
+            List<Equipment> founded = gymc.Find(Convert.ToInt32(Console.ReadLine()), Convert.ToInt32(Console.ReadLine()));
+            Console.WriteLine($"\tResult [{founded.Count}]:");
+            foreach (var item in founded)
+            {
+                Console.WriteLine(item.ToString());
+            }
             Console.ReadKey();
         }
     }

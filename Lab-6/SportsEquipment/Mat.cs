@@ -6,24 +6,34 @@ using System.Threading.Tasks;
 
 namespace Lab_6.SportsEquipment
 {
-    public class Mat : Equipment
+    public partial class Mat : Equipment
     {
-        public override double SomethingProperty
+        public enum Type
         {
-            get
-            {
-                return somethingField * -Application.rand.NextDouble();
-            }
-            set => base.SomethingProperty = value;
+            TypeA = 10,
+            TypeB = 11,
+            TypeC = 12
         }
-        public override string ToStaticString()
+        public struct Dimensions
         {
-            return "Name\tSomethingProperty";
+            public float Length { get; set; }
+            public float Width { get; set; }
+            public float Height { get; set; }
+
         }
 
-        public override string ToString()
+        public Type MatType { get; set; }
+        public Dimensions dimensions = new Dimensions();
+
+        public Mat()
         {
-            return $"Mat\t{SomethingProperty}";
+            Cost = Application.rand.Next(100);
+            dimensions = new Dimensions()
+            {
+                Length = Application.rand.Next() * (float)Application.rand.NextDouble(),
+                Width = Application.rand.Next() * (float)Application.rand.NextDouble(),
+                Height = Application.rand.Next() * (float)Application.rand.NextDouble(),
+            };
         }
     }
 }

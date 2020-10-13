@@ -8,30 +8,31 @@ namespace Lab_6.SportsEquipment
 {
     public class Bar : Equipment
     {
-        private float[] dimensions;
-        public float Length
+        public enum Type
         {
-            get { return dimensions[0]; }
-            set { dimensions[0] = value; }
-        }
-        public float Width
-        {
-            get { return dimensions[1]; }
-            set { dimensions[1] = value; }
+            Parallel = 0,
+            Uneven
         }
 
-        public float Height
+        public struct Dimensions
         {
-            get { return dimensions[2]; }
-            set { dimensions[2] = value; }
+            public float Length { get; set; }
+            public float Width { get; set; }
+            public float Height { get; set; }
+
         }
+
+        public Type BarType { get; set; }
+        public Dimensions dimensions;
+
 
         public Bar()
         {
-            dimensions = new float[3];
-            Length = 350f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble());
-            Width = 4f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble()) * 0.1f;
-            Height = 200f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble());
+            Cost = Application.rand.Next(100);
+            dimensions = new Dimensions();
+            dimensions.Length = 350f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble());
+            dimensions.Width = 4f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble()) * 0.1f;
+            dimensions.Height = 200f + (float)(Application.rand.NextDouble() - Application.rand.NextDouble());
         }
 
         public override string ToStaticString()
@@ -40,7 +41,7 @@ namespace Lab_6.SportsEquipment
         }
         public override string ToString()
         {
-            return $"Bar\t{Length}cm\t{Width}cm\t{Height}cm";
+            return $"Bar\t{dimensions.Length}cm\t{dimensions.Width}cm\t{dimensions.Height}cm";
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Lab_6.SportsEquipment
     public abstract class Equipment
     {
         protected double somethingField;
-        
+       
+        public double Cost { get; set; }
         public virtual double SomethingProperty
         {
             get { return somethingField; }
