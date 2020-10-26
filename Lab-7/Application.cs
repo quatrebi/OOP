@@ -1,13 +1,13 @@
-﻿using Lab_5;
-using Lab_6.Interfaces;
-using Lab_6.SportsEquipment;
+﻿using Lab_7.Exceptions;
+using Lab_7.Interfaces;
+using Lab_7.SportsEquipment;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Lab_6
+namespace Lab_7
 {
     public class Application
     {
@@ -17,6 +17,71 @@ namespace Lab_6
         {
             rand = new Random(DateTime.Now.Millisecond);
             Console.CursorVisible = false;
+
+            Mat mat = new Mat();
+            try
+            {
+                mat.Cost = -100;
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ToLog();
+                ex.ToString().ToLog();
+            }
+            finally
+            {
+                Console.Write("\n\tВведите новое значение цены: ");
+                var newCost = Convert.ToInt32(Console.ReadLine());
+                mat.Cost = Math.Abs(newCost);
+            }
+
+            Console.Clear();
+
+            try
+            {
+                mat.MatType = (Mat.Type)(rand.Next());
+            }
+            catch (NotAvailableType ex)
+            {
+                Console.WriteLine($"Expecption {ex} in {ex.Source}");
+                Console.WriteLine("Stack trace: " + ex.StackTrace);
+                Console.WriteLine("In method:" + ex.TargetSite);
+            }
+            catch (NullReferenceException)
+            {
+                "Null!".ToLog();
+            }
+            finally
+            {
+                mat.MatType = Mat.Type.TypeB;
+            }
+
+            Bar bar;
+            try
+            {
+                mat.Cost = rand.Next() / rand.Next(-1, 2);
+                bar = new Bar(true);
+            }
+            catch (CannotBeCreated)
+            {
+                "Cannot be a created".ToLog();
+                bar = new Bar();
+            }
+            catch (DivideByZeroException)
+            {
+                "Деление на ноль!".ToLog();
+                mat.Cost = rand.Next();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString().ToLog();
+            }
+
+            Bench bench = null;
+            Debug.Assert(bench != null, "Got a null");
+
+            Console.ReadKey();
+            Console.Clear();
 
             Equipment[] equipments = new Equipment[4];
             equipments[0] = new Bar();
