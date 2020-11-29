@@ -89,7 +89,7 @@ namespace Lab_12
             Type t = GetObjectType(objName);
 
             WriteToFile(objName + ".txt", string.Join("\n", TableFormat(new string[] {
-                $"Namespace: {t.Namespace}",
+                $"\nNamespace: {t.Namespace}",
                 $"Name: {t.Name}\n",
                 $"IsAbstract: {t.IsAbstract}",
                 $"IsArray: {t.IsArray}",
