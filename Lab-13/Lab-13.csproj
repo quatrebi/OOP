@@ -48,6 +48,7 @@
     <Compile Include="DiskInfo.cs" />
     <Compile Include="FileInfo.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="Interpreter.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

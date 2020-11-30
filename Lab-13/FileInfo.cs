@@ -17,7 +17,7 @@ namespace Lab_13
 
         public override string ToString()
         {
-            return $"{m_fileInfo.Name} [{m_fileInfo.Extension}] {m_fileInfo.Length} bytes"
+            return $"{m_fileInfo.Name} [{m_fileInfo.Extension}] {m_fileInfo.Length} bytes";
         }
     }
 }
