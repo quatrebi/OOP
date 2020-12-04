@@ -10,7 +10,7 @@ namespace Lab_11
 
         public static Regex busNumberPattern = new Regex(@"\d{4}\s\w{2}-[0-9]");
         public static Random rand = new Random(DateTime.Now.Millisecond);
-        public static string[] months;
+        public static IEnumerable<string> months;
         const string sep = " : ";
         static void Main(string[] args)
         {
@@ -18,7 +18,7 @@ namespace Lab_11
             string[] autumn = { "September", "October", "November" };
             string[] winter = { "December", "January", "February" };
             string[] spring = { "March", "April", "May" };
-            months = summer.Concat(autumn).Concat(winter).Concat(spring).ToArray();
+            months = winter.Skip(1).Concat(spring).Concat(summer).Concat(autumn).Concat(winter.Take(1));
 
             Console.Write("\n Введите длину строки: ");
             int n = Convert.ToInt32(Console.ReadLine());
@@ -26,13 +26,16 @@ namespace Lab_11
                 Console.Write(s + sep);
 
             Console.WriteLine("\n\n Вывод летних и зимних месяцев: ");
-            foreach (var s in months.Where(x => months.Intersect(summer).Contains(x) || months.Intersect(winter).Contains(x)))
+            foreach (var s in months.Where(x => months.Intersect(summer).Contains(x) || months.Except(summer.Concat(autumn).Concat(spring)).Contains(x)))
                 Console.Write(s + sep);
 
-            Console.WriteLine("\n\n Вывод месяцев в алфавитном порядке: ");
+            Console.WriteLine("\n\n Вывод месяцев в алфавитном порядке:");
             Console.WriteLine(string.Join(sep, from m in months orderby m select m));
 
-            Console.WriteLine("\n Месяца содержащие буквук 'u' и длиной не менее 4: ");
+            Console.WriteLine("\n Вывод первых месяец каждой поры года:");
+            Console.WriteLine(string.Join(sep, summer.First(), autumn.FirstOrDefault(), winter.ElementAt(0), spring[0]));
+
+            Console.WriteLine("\n Месяца содержащие букву 'u' и длиной не менее 4: ");
             Console.WriteLine(string.Join(sep, months.Where(x => x.Length >= 4 && x.Contains('u'))));
 
             List<Bus> buses = new List<Bus>();
@@ -63,6 +66,23 @@ namespace Lab_11
             Console.WriteLine("\n Группировка автобусов по именам водителей: ");
             foreach (var group in from bus in buses group bus by bus.Driver.Firstname)
                 Console.WriteLine(string.Join("\n", group) + "\n");
+
+            var iMonths = months.Zip(Enumerable.Range(1, months.Count()), (m, i) => new { Name = m, Number = i });
+
+            for (int i = 0; i < 100; i++) buses.Add(new Bus());
+            Console.WriteLine("\n Группировка автобусов по дате: ");
+            foreach (var yGroup in from bus in buses orderby bus.StartDate.Year group bus by bus.StartDate.Year)
+            {
+                Console.WriteLine($"\t{yGroup.Key}:");
+                foreach (var mGroup in from bus in yGroup orderby bus.StartDate.Month descending group bus by bus.StartDate.Month)
+                {
+                    Console.WriteLine($"\t\t{iMonths.Where(x => x.Number == mGroup.Key).SingleOrDefault()?.Name}:");
+                    foreach (var b in mGroup)
+                    {
+                        Console.WriteLine($"\t\t\t{b}");
+                    }
+                }
+            }
 
             Console.ReadKey();
         }

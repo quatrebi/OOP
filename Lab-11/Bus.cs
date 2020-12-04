@@ -128,7 +128,7 @@ namespace Lab_11
                                      month: Application.rand.Next(1, 12),
                                      day: Application.rand.Next(1, 28));
             Mileage = (DateTime.Now.Hour - StartDate.Hour) * Application.rand.Next(50, m_maxSpeed);
-            Driver = new Driver(Application.months[Application.rand.Next(12)] + ' ' + Application.months[Application.rand.Next(12)]);
+            Driver = new Driver(Application.months.ElementAt(Application.rand.Next(12)) + ' ' + Application.months.ToArray()[Application.rand.Next(12)]);
             WayNumber = (short)Application.rand.Next(1, 11);
             BusNumber = $"{Application.rand.Next(1111, 9999)} IT-{Application.rand.Next(0, 9)}";
         }
@@ -157,13 +157,14 @@ namespace Lab_11
         }
 
         public override int GetHashCode()
+
         {
             return ID.GetHashCode();
         }
 
         public override string ToString()
         {
-            return $"{_brand} [{BusNumber}] {_startDate.ToShortDateString()} {_mileage}kms\t{Driver}\t{_wayNumber}";
+            return $"{_brand} [{BusNumber}] {_startDate.ToShortDateString()} {_mileage}kms\t{Driver, -20}\t{_wayNumber}";
         }
     }
 
