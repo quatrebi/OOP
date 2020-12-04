@@ -25,16 +25,21 @@ namespace Lab_13
             string methodName = splited.ElementAt(splited.Count() - 2);
             string className = string.Join(".", splited.TakeWhile(x => x != methodName));
 
-            Type type = Type.GetType(className, false, true);
+            Type type = Type.GetType(className, false, true) ?? Type.GetType($"{DefaultNamespace}.{className}", false, true);
+            if (type == null) throw new Exception("Class type with this name cannot be found.");
             object obj = type.IsAbstract ? null : Activator.CreateInstance(type);
             KeyValuePair<Type, object>[] args = argsName.Split(',').Select(x =>
             {
-                var kv = x.Split(':');
-                Type t = Type.GetType(kv.FirstOrDefault().Replace("_", "."));
-                return new KeyValuePair<Type, object>(t, Convert.ChangeType(kv.LastOrDefault(), t));
+                var kv = Regex.Split(x, @"\s*[=]\s*");
+                var typeName = kv.FirstOrDefault().Replace("_", ".");
+                Type t = Type.GetType(typeName, false, true) ?? Type.GetType($"{DefaultNamespace}.{typeName}", false, true);
+                return new KeyValuePair<Type, object>(t, Convert.ChangeType(kv.LastOrDefault(), t ?? new object().GetType()));
             }).ToArray();
-            MethodInfo method = type.GetMethod(methodName, args.Select(x => x.Key).ToArray());
-            return method.Invoke(obj, args.Select(x => x.Value).ToArray());
+            if (args.Count() == 1 && args.FirstOrDefault().Key == null) args = null;
+            MethodInfo method = type.GetMethod(methodName, args?.Select(x => x.Key).ToArray() ?? Type.EmptyTypes);
+            object result = method?.Invoke(obj, args?.Select(x => x.Value).ToArray() ?? null);
+            Logger.ToLog(type, method, args?.Select(x => x.Value).ToArray() ?? null, result);
+            return result;
         }
     }
 }
