@@ -4,10 +4,11 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Lab_14.SportsEquipment
 {
-    [Serializable, DataContract, KnownType(typeof(Equipment))]
+    [Serializable, DataContract]
     public class Bar : Equipment
     {
         public enum Type
@@ -16,20 +17,19 @@ namespace Lab_14.SportsEquipment
             Uneven
         }
 
-        [Serializable]
-        [DataContract]
+        [Serializable, DataContract]
         public struct Dimensions
         {
-            [DataMember]
+            [DataMember, XmlAttribute]
             public float Length { get; set; }
             [DataMember]
             public float Width { get; set; }
-            [DataMember]
+            [DataMember, XmlAttribute]
             public float Height { get; set; }
 
         }
 
-        [DataMember]
+        [DataMember, XmlAttribute]
         public Type BarType { get; set; }
         [DataMember]
         public Dimensions dimensions;

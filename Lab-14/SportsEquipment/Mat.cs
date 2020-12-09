@@ -4,10 +4,11 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Lab_14.SportsEquipment
 {
-    [Serializable, DataContract, KnownType(typeof(Equipment))]
+    [Serializable, DataContract]
     public partial class Mat : Equipment
     {
         public enum Type
@@ -16,16 +17,21 @@ namespace Lab_14.SportsEquipment
             TypeB = 11,
             TypeC = 12
         }
-        [Serializable]
+        [Serializable, DataContract]
         public struct Dimensions
         {
-            public float Length { get; set; }
+            [DataMember]
+            public float Length { get; set; } 
+            [DataMember]
             public float Width { get; set; }
+            [DataMember]
             public float Height { get; set; }
 
         }
 
+        [DataMember]
         public Type MatType { get; set; }
+        [DataMember]
         public Dimensions dimensions = new Dimensions();
 
         public Mat()

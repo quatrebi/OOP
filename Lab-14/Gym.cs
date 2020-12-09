@@ -9,14 +9,11 @@ using System.Xml.Serialization;
 
 namespace Lab_14
 {
-    [CollectionDataContract, Serializable, XmlRoot]
+    [Serializable]
     public class Gym
     {
-        [DataMember, SoapElement, XmlArray]
         private List<Equipment> equipments;
-        [DataMember]
         private double curMoney;
-        [IgnoreDataMember, SoapIgnore, XmlIgnore]
         public double TotalMoney { get; private set; }
         public bool HasMoney => curMoney < TotalMoney;
 
@@ -63,10 +60,9 @@ namespace Lab_14
         }
     }
 
-    [Serializable, CollectionDataContract, XmlRoot]
+    [Serializable]
     public class GymController
     {
-        [DataMember, XmlElement]
         public Gym gym;
 
         public GymController()

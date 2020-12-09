@@ -5,10 +5,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Lab_14.SportsEquipment
 {
-    [Serializable, DataContract, KnownType(typeof(Equipment))]
+    [Serializable, DataContract]
     public class Bench : Equipment
     {
         public enum BenchType
@@ -21,15 +22,18 @@ namespace Lab_14.SportsEquipment
             Preacher = 20
         }
 
-        [Serializable]
+        [Serializable, DataContract]
         public struct Dimensions
         {
+            [DataMember]
             public float Width { get; set; }
+            [DataMember]
             public float Height { get; set; }
 
         }
-
+        [DataMember]
         public BenchType Type { get; set; }
+        [DataMember]
         public Dimensions dimensions = new Dimensions();
 
         public Bench()

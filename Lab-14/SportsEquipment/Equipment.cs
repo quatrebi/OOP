@@ -8,14 +8,16 @@ using System.Xml.Serialization;
 
 namespace Lab_14.SportsEquipment
 {
-    [DataContract, Serializable, XmlRoot]
+    [Serializable, DataContract]
+    [KnownType(typeof(Bench)), KnownType(typeof(Mat)), KnownType(typeof(Bar))]
     public abstract class Equipment
     {
-        [DataMember, XmlElement]
+        [DataMember]
         protected double somethingField;
        
-        [DataMember, XmlElement]
+        [DataMember]
         public double Cost { get; set; }
+        [DataMember]
         public virtual double SomethingProperty
         {
             get { return somethingField; }
