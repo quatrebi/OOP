@@ -10,7 +10,6 @@ namespace Lab_13
     {
         private static string m_fileName;
         private static string m_currentDirectory;
-        public static FileStream file = new FileStream(CurrentDirectory + Filename, FileMode.Append);
 
         public static string CurrentDirectory
         {
@@ -36,33 +35,22 @@ namespace Lab_13
             }
         }
 
-        public static string GetLog(string _date)
-        {
-            DateTime date = DateTime.Parse(_date);
-            byte[] _data = null; file.Read(_data, 0, (int)file.Length);
-            string[] data = System.Text.Encoding.Default.GetString(_data).Split('\n');
-            return (from line in data
-                    select DateTime.Parse(Regex.Split(line, @"[\[\]]").ElementAt(1))).Where(x => x == date).Select(x => x.ToString()).SingleOrDefault();
-        }
-
         public static string[] GetLogs(string word)
         {
-            byte[] _data = null; file.Read(_data, 0, (int)file.Length);
+            FileStream fin = new FileStream(Filename, FileMode.Open);
+            byte[] _data = new byte[fin.Length]; fin.Read(_data, 0, (int)fin.Length);
+            fin.Close();
             string[] data = System.Text.Encoding.Default.GetString(_data).Split('\n');
             return (from line in data where line.Contains(word) select line).ToArray();
         }
 
         public static void ToLog(Type className, MethodInfo methodName, object[] args, object result)
         {
+            FileStream file = new FileStream(CurrentDirectory + Filename, FileMode.Append);
             byte[] data = System.Text.Encoding.Default.GetBytes($"[{DateTime.Now.ToUniversalTime()}] {Environment.UserName} used {methodName?.Name}() with arguments = " +
                 string.Join(",", args ?? new object[] { "null" }) + $" from {className?.FullName} --> {result?.ToString().Replace("\n", "+n") ?? "void"}\n");
             file.Write(data, 0, data.Length);
             file.Flush();
-        }
-
-        public static void Close()
-        {
-            file.Close();
         }
     }
 }

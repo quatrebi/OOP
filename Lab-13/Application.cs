@@ -8,8 +8,8 @@ namespace Lab_13
     {
         static void Main(string[] args)
         {
-            //new FileManager().RenameDirectory(@"D:\University\ООП\1 сем\Labs\OOP\Lab-13\bin\Debug\folder",
-            //    @"D:\University\ООП\1 сем\Labs\OOP\Lab-13\bin\Debug\a\folder");
+            Console.WriteLine(string.Join("\n", Logger.GetLog("09.12.2020")));
+            //Console.WriteLine(string.Join("\n", Logger.GetLogs("CopyFile")));
             Console.Title = "[CFM] Console File Manager";
             string cmd = string.Empty;
             while (cmd != "Exit()")
@@ -24,14 +24,14 @@ namespace Lab_13
                 {
                     Console.WriteLine(Interpreter.InvokeMethod(cmd));
                 }
-                catch (Exception e)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"[ERROR] {e.Message}\n\n{e.StackTrace}\n");
-                    Console.ResetColor();
-                }
+                finally { }
+                //catch (Exception e)
+                //{
+                //    Console.ForegroundColor = ConsoleColor.Red;
+                //    Console.WriteLine($"[ERROR] {e.Message}\n\n{e.StackTrace}\n");
+                //    Console.ResetColor();
+                //}
             }
-            Logger.Close();
         }
     }
 }

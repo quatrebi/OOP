@@ -22,9 +22,9 @@ namespace Lab_13
 
         public void CopyExtsToDir(string ext, string pathFrom, string pathTo)
         {
-            foreach (var file in new DirInfo(pathFrom).Directory.GetFiles())
-                if (file.Extension == ext)
-                    file.CopyTo(pathTo);
+            foreach (var file in new DirInfo(pathFrom.Replace('#', '.')).Directory.GetFiles())
+                if (file.Extension == ext.Replace('#', '.'))
+                    file.CopyTo(pathTo.Replace('#', '.') + file.Name, true);
         }
 
         public string GetDirectoryContents()
